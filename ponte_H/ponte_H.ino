@@ -6,7 +6,7 @@ int IN4 = 7;
   
 void setup()
 {
-  //Define os pinos como saida
+ //Define os pinos como saida
  pinMode(IN1, OUTPUT);
  pinMode(IN2, OUTPUT);
  pinMode(IN3, OUTPUT);
