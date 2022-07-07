@@ -16,7 +16,9 @@ int IN1 = 6;
 int IN2 = 7;
 int IN3 = 8;
 int IN4 = 9;
-                      
+
+int x = 0;
+
 void setup() {
   //sensor infravermelho
   pinMode(sensorDireito, INPUT);
@@ -62,42 +64,71 @@ void loop() {
     Serial.println("procurando oponente");
     //Procura em forma de quadrado
     procura();  
-  }
-
-  //Se encontrar algo na sua frente
-  else if (distancia < 20 && distancia > 0 && sensor_direito == 0 && sensor_esquerdo == 0) {
-    //Permenace na mesma condição até o sensor encotrar a borda da arena
-    if (sensor_direito != 1 && sensor_esquerdo != 1) {
-      Serial.println("achei o oponente");
-      andar_frente();//Movimenta para frente
+    x = 0;
+    //Se encontrar a borda e não o oponente
+    if (sensor_direito == 1 && sensor_esquerdo == 0) {
+      parar();
+      delay(500);
+      Serial.println("Sensor Direito achou a borda");
+      Serial.println("Parei o motor");
+      andar_tras();
+      delay(500);
+    }  
+    else if (sensor_direito == 0 && sensor_esquerdo == 1) {
+      parar();
+      delay(500);
+      Serial.println("Sensor Esquerdo achou borda");
+      Serial.println("Parei o motor");
+      andar_tras();
+      delay(500);
+    }
+    else if (sensor_direito == 1 && sensor_esquerdo == 1) {
+      parar();
+      delay(500);
+      Serial.println("Sensor Esquerdo e o Direito acharam a borda");
+      Serial.println("Parei o motor");
+      andar_tras();
+      delay(500);
     }
   }
 
-  //Se encontrar a borda e não o oponente
-  else if (sensor_direito == 1 && sensor_esquerdo == 0) {
-    parar();
-    delay(500);
-    Serial.println("Sensor Direito achou a borda");
-    Serial.println("Parei o motor");
-    andar_tras();
-    delay(500);
-  }  
-  else if (sensor_direito == 0 && sensor_esquerdo == 1) {
-    parar();
-    delay(500);
-    Serial.println("Sensor Esquerdo achou borda");
-    Serial.println("Parei o motor");
-    andar_tras();
-    delay(500);
+  //Se encontrar algo na sua frente
+  if (distancia < 20 && distancia > 0 && sensor_direito == 0 && sensor_esquerdo == 0) {
+    //Permenace na mesma condição até o sensor encotrar a borda da arena
+    while (x != 1) {
+      Serial.println("achei o oponente");
+      andar_frente();//Movimenta para frente
+      if (distancia > 20){
+        x = 1;
+      }
+    }
+    if (sensor_direito == 1 && sensor_esquerdo == 0) {
+      parar();
+      delay(500);
+      Serial.println("Sensor Direito achou a borda");
+      Serial.println("Parei o motor");
+      andar_tras();
+      delay(500);
+    }  
+    else if (sensor_direito == 0 && sensor_esquerdo == 1) {
+      parar();
+      delay(500);
+      Serial.println("Sensor Esquerdo achou borda");
+      Serial.println("Parei o motor");
+      andar_tras();
+      delay(500);
+    }
+    else if (sensor_direito == 1 && sensor_esquerdo == 1) {
+      parar();
+      delay(500);
+      Serial.println("Sensor Esquerdo e o Direito acharam a borda");
+      Serial.println("Parei o motor");
+      andar_tras();
+      delay(500);
+    }
   }
-  else if (sensor_direito == 1 && sensor_esquerdo == 1) {
-    parar();
-    delay(500);
-    Serial.println("Sensor Esquerdo e o Direito acharam a borda");
-    Serial.println("Parei o motor");
-    andar_tras();
-    delay(500);
-  }
+
+ 
 }
 
 void parar(){
